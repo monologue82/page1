@@ -398,6 +398,61 @@
       box-shadow: 0 0 0 4px rgba(0, 212, 170, 0.1);
     }
     
+    /* 手机端输入框优化 */
+    @media (max-width: 480px) {
+      .modal-input-group input:focus {
+        transform: translateY(0);
+        position: relative;
+        z-index: 1;
+      }
+    }
+    
+    /* 键盘弹出时的优化 */
+    @media (max-width: 480px) and (max-height: 600px) {
+      .modal-overlay {
+        padding: 8px;
+      }
+      
+      .modal-content {
+        max-height: 80vh;
+        padding: 16px;
+      }
+      
+      .modal-title {
+        font-size: 16px;
+        margin-bottom: 8px;
+      }
+      
+      .modal-date, .modal-info {
+        font-size: 12px;
+        margin-bottom: 12px;
+      }
+      
+      .modal-input-group {
+        margin-bottom: 12px;
+      }
+      
+      .modal-input-group label {
+        font-size: 12px;
+        margin-bottom: 6px;
+      }
+      
+      .modal-input-group input {
+        padding: 12px;
+        font-size: 16px;
+      }
+      
+      .modal-actions {
+        gap: 8px;
+        margin-top: 8px;
+      }
+      
+      .modal-actions button {
+        padding: 12px;
+        font-size: 14px;
+      }
+    }
+    
     .modal-actions {
       display: flex;
       gap: 10px;
@@ -634,9 +689,17 @@
         padding: 8px 0;
       }
       
+      .modal-overlay {
+        padding: 12px;
+        align-items: flex-end;
+      }
+      
       .modal-content {
         padding: 20px;
         max-width: 100%;
+        max-height: 85vh;
+        border-radius: 16px 16px 0 0;
+        margin-bottom: 0;
       }
       
       .modal-title {
@@ -1364,6 +1427,12 @@
         if (input) {
           input.focus();
           input.select();
+          
+          // 确保输入框在键盘弹出时可见
+          const modalContent = input.closest('.modal-content');
+          if (modalContent) {
+            input.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          }
         }
       }, 100);
     }
@@ -1735,6 +1804,7 @@
       `;
     }
 
+    // 启动应用
     window.addEventListener('DOMContentLoaded', init);
   </script>
 </body>
