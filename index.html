@@ -19,11 +19,42 @@
     
     body {
       font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif;
-      background: #f5f7fa;
+      background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
       min-height: 100vh;
       color: #333;
       -webkit-font-smoothing: antialiased;
       -moz-osx-font-smoothing: grayscale;
+      position: relative;
+      overflow-x: hidden;
+    }
+
+    /* 主页面背景装饰 */
+    body::before {
+      content: '';
+      position: fixed;
+      top: -150px;
+      right: -150px;
+      width: 350px;
+      height: 350px;
+      background: linear-gradient(135deg, #00d4aa 0%, #00a8cc 100%);
+      border-radius: 50%;
+      opacity: 0.06;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    body::after {
+      content: '';
+      position: fixed;
+      bottom: -200px;
+      left: -200px;
+      width: 450px;
+      height: 450px;
+      background: linear-gradient(135deg, #00d4aa 0%, #00a8cc 100%);
+      border-radius: 50%;
+      opacity: 0.04;
+      z-index: 0;
+      pointer-events: none;
     }
     
     .app-container {
@@ -31,6 +62,8 @@
       margin: 0 auto;
       padding: 16px;
       min-height: 100vh;
+      position: relative;
+      z-index: 1;
     }
     
     .header {
@@ -38,45 +71,46 @@
       justify-content: space-between;
       align-items: center;
       margin-bottom: 20px;
-      padding: 20px;
+      padding: 24px;
       background: white;
-      border-radius: 12px;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+      border-radius: 16px;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
       flex-wrap: wrap;
       gap: 12px;
     }
     
     .title {
-      font-size: 24px;
+      font-size: 26px;
       font-weight: 700;
       color: #2c3e50;
       margin: 0;
       flex: 1;
       min-width: 120px;
+      letter-spacing: -0.5px;
     }
     
     .backup-controls {
       display: flex;
-      gap: 8px;
+      gap: 10px;
       flex-wrap: wrap;
     }
     
     .backup-controls button {
-      padding: 8px 16px;
+      padding: 10px 18px;
       font-size: 14px;
-      border: 1px solid #3498db;
-      background: white;
-      color: #3498db;
-      border-radius: 8px;
+      border: none;
+      background: linear-gradient(135deg, #00d4aa 0%, #00a8cc 100%);
+      color: white;
+      border-radius: 10px;
       cursor: pointer;
-      transition: all 0.2s ease;
-      font-weight: 500;
+      transition: all 0.3s ease;
+      font-weight: 600;
+      box-shadow: 0 2px 8px rgba(0, 212, 170, 0.25);
     }
     
     .backup-controls button:hover {
-      background: #3498db;
-      color: white;
-      transform: translateY(-1px);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 16px rgba(0, 212, 170, 0.35);
     }
     
     .backup-controls button:active {
@@ -86,65 +120,69 @@
     .stats-container {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
-      gap: 12px;
+      gap: 14px;
       margin-bottom: 20px;
     }
     
     .stat-card {
       background: white;
-      padding: 20px;
-      border-radius: 12px;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+      padding: 24px;
+      border-radius: 16px;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
       text-align: center;
-      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
     }
     
     .stat-card:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      transform: translateY(-4px);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
     }
     
     .stat-label {
       font-size: 13px;
       color: #7f8c8d;
       margin-bottom: 8px;
-      font-weight: 500;
+      font-weight: 600;
+      letter-spacing: 0.5px;
     }
     
     .stat-value {
-      font-size: 20px;
+      font-size: 22px;
       font-weight: 700;
-      color: #3498db;
+      background: linear-gradient(135deg, #00d4aa 0%, #00a8cc 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
     }
     
     .calendar-container {
       background: white;
-      padding: 20px;
-      border-radius: 12px;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+      padding: 24px;
+      border-radius: 16px;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
     }
     
     .calendar-header {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 16px;
+      margin-bottom: 20px;
       padding: 0 8px;
     }
     
     .calendar-header button {
       background: none;
       border: none;
-      font-size: 28px;
-      color: #3498db;
+      font-size: 32px;
+      color: #00a8cc;
       cursor: pointer;
       padding: 8px 16px;
-      transition: all 0.2s ease;
-      border-radius: 8px;
+      transition: all 0.3s ease;
+      border-radius: 12px;
     }
     
     .calendar-header button:hover {
-      background: #ecf0f1;
+      background: linear-gradient(135deg, rgba(0, 212, 170, 0.1) 0%, rgba(0, 168, 204, 0.1) 100%);
       transform: scale(1.1);
     }
     
@@ -153,31 +191,32 @@
     }
     
     .calendar-title {
-      font-size: 18px;
+      font-size: 20px;
       font-weight: 700;
       margin: 0;
       color: #2c3e50;
+      letter-spacing: -0.5px;
     }
     
     .calendar-weekdays {
       display: grid;
       grid-template-columns: repeat(7, 1fr);
-      gap: 4px;
-      margin-bottom: 4px;
+      gap: 6px;
+      margin-bottom: 6px;
     }
     
     .weekday {
       text-align: center;
       font-weight: 600;
       color: #7f8c8d;
-      padding: 10px 0;
+      padding: 12px 0;
       font-size: 12px;
     }
     
     .calendar-grid {
       display: grid;
       grid-template-columns: repeat(7, 1fr);
-      gap: 4px;
+      gap: 6px;
     }
     
     .calendar-day {
@@ -186,18 +225,19 @@
       flex-direction: column;
       justify-content: center;
       align-items: center;
-      border-radius: 8px;
+      border-radius: 10px;
       background: #f8f9fa;
       cursor: pointer;
-      transition: all 0.2s ease;
+      transition: all 0.3s ease;
       padding: 4px;
-      min-height: 44px;
+      min-height: 48px;
       position: relative;
     }
     
     .calendar-day:hover:not(.empty):not(.disabled) {
-      background: #e9ecef;
+      background: linear-gradient(135deg, rgba(0, 212, 170, 0.1) 0%, rgba(0, 168, 204, 0.1) 100%);
       transform: scale(1.05);
+      box-shadow: 0 2px 8px rgba(0, 212, 170, 0.15);
     }
     
     .calendar-day:active:not(.empty):not(.disabled) {
@@ -215,36 +255,36 @@
     }
     
     .calendar-day.today {
-      border: 2px solid #3498db;
-      background: #ebf5fb;
+      border: 2px solid #00d4aa;
+      background: linear-gradient(135deg, rgba(0, 212, 170, 0.1) 0%, rgba(0, 168, 204, 0.1) 100%);
     }
     
     .calendar-day.has-income {
-      background: #d5e8f7;
-      border: 1px solid #3498db;
+      background: linear-gradient(135deg, rgba(0, 212, 170, 0.15) 0%, rgba(0, 168, 204, 0.15) 100%);
+      border: 1px solid rgba(0, 212, 170, 0.3);
     }
     
     .calendar-day.today.has-income {
-      border: 2px solid #3498db;
-      background: #d5e8f7;
+      border: 2px solid #00d4aa;
+      background: linear-gradient(135deg, rgba(0, 212, 170, 0.2) 0%, rgba(0, 168, 204, 0.2) 100%);
     }
     
     .day-number {
-      font-size: 14px;
+      font-size: 15px;
       font-weight: 600;
       color: #2c3e50;
-      margin-bottom: 2px;
+      margin-bottom: 3px;
     }
     
     .income-amount {
       font-size: 11px;
       font-weight: 700;
-      color: #3498db;
-      background: white;
-      padding: 2px 6px;
-      border-radius: 4px;
+      background: linear-gradient(135deg, #00d4aa 0%, #00a8cc 100%);
+      color: white;
+      padding: 2px 8px;
+      border-radius: 6px;
       white-space: nowrap;
-      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+      box-shadow: 0 2px 6px rgba(0, 212, 170, 0.25);
     }
     
     .modal-overlay {
@@ -269,7 +309,7 @@
     
     @keyframes slideIn {
       from {
-        transform: scale(0.9);
+        transform: scale(0.92);
         opacity: 0;
       }
       to {
@@ -284,98 +324,107 @@
         opacity: 1;
       }
       to {
-        transform: scale(0.9);
+        transform: scale(0.92);
         opacity: 0;
       }
     }
     
     .modal-content {
       background: white;
-      padding: 24px;
-      border-radius: 12px;
-      max-width: 340px;
+      padding: 28px;
+      border-radius: 16px;
+      max-width: 520px;
       width: 100%;
-      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
-      animation: slideIn 0.2s ease;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+      animation: slideIn 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      max-height: 90vh;
+      overflow-y: auto;
     }
     
     .modal-content.closing {
-      animation: slideOut 0.2s ease;
+      animation: slideOut 0.2s cubic-bezier(0.4, 0, 0.2, 1);
     }
     
     .modal-title {
-      font-size: 20px;
+      font-size: 22px;
       font-weight: 700;
-      margin-bottom: 8px;
+      margin-bottom: 10px;
       color: #2c3e50;
+      letter-spacing: -0.5px;
     }
     
     .modal-date {
       color: #7f8c8d;
-      margin-bottom: 16px;
+      margin-bottom: 20px;
       font-size: 13px;
+      font-weight: 500;
     }
     
     .modal-info {
       color: #7f8c8d;
-      margin-bottom: 16px;
+      margin-bottom: 20px;
       font-size: 13px;
+      font-weight: 500;
     }
     
     .modal-input-group {
-      margin-bottom: 16px;
+      margin-bottom: 20px;
     }
     
     .modal-input-group label {
       display: block;
-      margin-bottom: 6px;
-      font-weight: 500;
+      margin-bottom: 8px;
+      font-weight: 600;
       color: #2c3e50;
       font-size: 14px;
+      letter-spacing: 0.5px;
     }
     
     .modal-input-group input {
       font-size: 16px;
-      padding: 12px;
-      border: 2px solid #e9ecef;
-      border-radius: 8px;
-      transition: all 0.2s ease;
+      padding: 14px;
+      border: 2px solid #ecf0f1;
+      border-radius: 12px;
+      transition: all 0.3s ease;
       width: 100%;
       -webkit-appearance: none;
+      background: #fafbfc;
     }
     
     .modal-input-group input:focus {
-      border-color: #3498db;
+      border-color: #00d4aa;
+      background: white;
       outline: none;
-      box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+      box-shadow: 0 0 0 4px rgba(0, 212, 170, 0.1);
     }
     
     .modal-actions {
       display: flex;
-      gap: 8px;
+      gap: 10px;
       flex-wrap: wrap;
     }
     
     .modal-actions button {
       flex: 1;
       min-width: 80px;
-      padding: 12px;
+      padding: 14px;
       border: none;
-      border-radius: 8px;
+      border-radius: 10px;
       font-size: 14px;
-      font-weight: 500;
+      font-weight: 600;
       cursor: pointer;
-      transition: all 0.2s ease;
+      transition: all 0.3s ease;
     }
     
     .btn-primary {
-      background: #3498db;
+      background: linear-gradient(135deg, #00d4aa 0%, #00a8cc 100%);
       color: white;
+      box-shadow: 0 2px 8px rgba(0, 212, 170, 0.25);
     }
     
     .btn-primary:hover {
-      background: #2980b9;
-      transform: translateY(-1px);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 16px rgba(0, 212, 170, 0.35);
     }
     
     .btn-secondary {
@@ -385,21 +434,140 @@
     
     .btn-secondary:hover {
       background: #7f8c8d;
-      transform: translateY(-1px);
+      transform: translateY(-2px);
     }
     
     .btn-danger {
-      background: #e74c3c;
+      background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
       color: white;
+      box-shadow: 0 2px 8px rgba(231, 76, 60, 0.25);
     }
     
     .btn-danger:hover {
-      background: #c0392b;
-      transform: translateY(-1px);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 16px rgba(231, 76, 60, 0.35);
     }
     
     .btn-full {
       width: 100%;
+    }
+    
+    .logout-button {
+      padding: 10px 18px;
+      font-size: 14px;
+      border: none;
+      background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+      color: white;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-weight: 600;
+      box-shadow: 0 2px 8px rgba(231, 76, 60, 0.25);
+    }
+
+    .logout-button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 16px rgba(231, 76, 60, 0.35);
+    }
+
+    /* 设备管理弹窗样式 */
+    .device-list {
+      max-height: 400px;
+      overflow-y: auto;
+      margin-bottom: 16px;
+    }
+
+    .device-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 16px;
+      background: #f8f9fa;
+      border-radius: 10px;
+      margin-bottom: 10px;
+      border: 1px solid #e9ecef;
+      transition: all 0.2s ease;
+    }
+
+    .device-item:hover {
+      border-color: #00d4aa;
+      background: #f0f9ff;
+    }
+
+    .device-item.current {
+      border-color: #00d4aa;
+      background: linear-gradient(135deg, rgba(0, 212, 170, 0.1) 0%, rgba(0, 168, 204, 0.1) 100%);
+    }
+
+    .device-item-info {
+      flex: 1;
+    }
+
+    .device-item-id {
+      font-weight: 600;
+      color: #2c3e50;
+      font-size: 13px;
+      margin-bottom: 4px;
+      font-family: 'Courier New', monospace;
+    }
+
+    .device-item-details {
+      font-size: 12px;
+      color: #7f8c8d;
+      line-height: 1.5;
+    }
+
+    .device-item-actions {
+      margin-left: 12px;
+    }
+
+    .device-item-remove {
+      padding: 8px 12px;
+      font-size: 12px;
+      border: none;
+      background: #fee;
+      color: #e74c3c;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      font-weight: 600;
+    }
+
+    .device-item-remove:hover {
+      background: #e74c3c;
+      color: white;
+      transform: translateY(-1px);
+    }
+
+    .device-item-remove:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      background: #f8f9fa;
+      color: #ccc;
+    }
+
+    .device-empty {
+      text-align: center;
+      padding: 40px 20px;
+      color: #7f8c8d;
+    }
+
+    .device-empty svg {
+      width: 64px;
+      height: 64px;
+      margin-bottom: 16px;
+      opacity: 0.3;
+    }
+
+    .current-device-badge {
+      display: inline-block;
+      padding: 2px 8px;
+      background: linear-gradient(135deg, #00d4aa 0%, #00a8cc 100%);
+      color: white;
+      border-radius: 4px;
+      font-size: 10px;
+      font-weight: 600;
+      margin-left: 8px;
     }
     
     /* 手机端优化 */
@@ -515,6 +683,279 @@
         transform: scale(0.95);
       }
     }
+
+    /* 登录页面样式 */
+    .login-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      padding: 20px;
+      background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* 背景装饰圆 */
+    .login-container::before {
+      content: '';
+      position: absolute;
+      top: -100px;
+      right: -100px;
+      width: 300px;
+      height: 300px;
+      background: linear-gradient(135deg, #00d4aa 0%, #00a8cc 100%);
+      border-radius: 50%;
+      opacity: 0.1;
+    }
+
+    .login-container::after {
+      content: '';
+      position: absolute;
+      bottom: -150px;
+      left: -150px;
+      width: 400px;
+      height: 400px;
+      background: linear-gradient(135deg, #00d4aa 0%, #00a8cc 100%);
+      border-radius: 50%;
+      opacity: 0.05;
+    }
+
+    .login-card {
+      background: white;
+      padding: 48px 40px;
+      border-radius: 24px;
+      box-shadow: 0 24px 64px rgba(0, 0, 0, 0.08);
+      max-width: 420px;
+      width: 100%;
+      animation: slideIn 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      position: relative;
+      z-index: 1;
+    }
+
+    /* Logo 图标 */
+    .login-logo {
+      width: 64px;
+      height: 64px;
+      margin: 0 auto 24px;
+      background: linear-gradient(135deg, #00d4aa 0%, #00a8cc 100%);
+      border-radius: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 8px 24px rgba(0, 212, 170, 0.3);
+    }
+
+    .login-logo svg {
+      width: 36px;
+      height: 36px;
+      fill: white;
+    }
+
+    .login-title {
+      font-size: 28px;
+      font-weight: 700;
+      color: #2c3e50;
+      margin-bottom: 8px;
+      text-align: center;
+      letter-spacing: -0.5px;
+    }
+
+    .login-subtitle {
+      color: #7f8c8d;
+      text-align: center;
+      margin-bottom: 32px;
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    .login-input-group {
+      margin-bottom: 20px;
+      position: relative;
+    }
+
+    .login-input-group label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 600;
+      color: #2c3e50;
+      font-size: 13px;
+      letter-spacing: 0.5px;
+    }
+
+    .login-input-wrapper {
+      position: relative;
+    }
+
+    .login-input-wrapper svg {
+      position: absolute;
+      left: 14px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 20px;
+      height: 20px;
+      color: #95a5a6;
+      transition: color 0.3s ease;
+    }
+
+    .login-input-group input {
+      font-size: 15px;
+      padding: 14px 14px 14px 48px;
+      border: 2px solid #ecf0f1;
+      border-radius: 12px;
+      transition: all 0.3s ease;
+      width: 100%;
+      -webkit-appearance: none;
+      background: #fafbfc;
+    }
+
+    .login-input-group input:focus {
+      border-color: #00d4aa;
+      background: white;
+      outline: none;
+      box-shadow: 0 0 0 4px rgba(0, 212, 170, 0.1);
+    }
+
+    .login-input-group input:focus + svg,
+    .login-input-wrapper:focus-within svg {
+      color: #00d4aa;
+    }
+
+    .login-button {
+      width: 100%;
+      padding: 16px;
+      background: linear-gradient(135deg, #00d4aa 0%, #00a8cc 100%);
+      color: white;
+      border: none;
+      border-radius: 12px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 16px rgba(0, 212, 170, 0.3);
+      letter-spacing: 0.5px;
+      margin-top: 8px;
+    }
+
+    .login-button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(0, 212, 170, 0.4);
+    }
+
+    .login-button:active {
+      transform: translateY(0);
+    }
+
+    .error-message {
+      color: #e74c3c;
+      text-align: center;
+      margin-bottom: 20px;
+      font-size: 13px;
+      display: none;
+      padding: 12px;
+      background: #fee;
+      border-radius: 8px;
+      border-left: 3px solid #e74c3c;
+    }
+
+    .error-message.show {
+      display: block;
+      animation: shake 0.5s ease;
+    }
+
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      25% { transform: translateX(-5px); }
+      75% { transform: translateX(5px); }
+    }
+
+    .device-info {
+      background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+      padding: 16px;
+      border-radius: 12px;
+      margin-top: 24px;
+      font-size: 12px;
+      color: #7f8c8d;
+      border: 1px solid #e9ecef;
+    }
+
+    .device-info-header {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 12px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid #e9ecef;
+      font-weight: 600;
+      color: #2c3e50;
+    }
+
+    .device-info-header svg {
+      width: 16px;
+      height: 16px;
+    }
+
+    .device-info-item {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 6px;
+      padding: 4px 0;
+    }
+
+    .device-info-item span:first-child {
+      color: #95a5a6;
+      font-weight: 500;
+    }
+
+    .device-info-item span:last-child {
+      color: #2c3e50;
+      font-weight: 600;
+      font-family: 'Courier New', monospace;
+      font-size: 11px;
+    }
+
+    /* 手机端登录页面优化 */
+    @media (max-width: 480px) {
+      .login-card {
+        padding: 36px 28px;
+        border-radius: 20px;
+      }
+
+      .login-logo {
+        width: 56px;
+        height: 56px;
+        margin-bottom: 20px;
+      }
+
+      .login-logo svg {
+        width: 32px;
+        height: 32px;
+      }
+
+      .login-title {
+        font-size: 24px;
+      }
+
+      .login-subtitle {
+        font-size: 13px;
+        margin-bottom: 24px;
+      }
+
+      .login-input-group {
+        margin-bottom: 16px;
+      }
+
+      .login-button {
+        padding: 14px;
+        font-size: 15px;
+      }
+
+      .device-info {
+        padding: 12px;
+        margin-top: 20px;
+      }
+    }
   </style>
 </head>
 <body>
@@ -528,16 +969,300 @@
       selectedDate: null,
       showModal: false,
       editValue: '',
-      showBackupModal: false
+      showBackupModal: false,
+      showDeviceModal: false,
+      isLoggedIn: false,
+      deviceFingerprint: null,
+      loginError: ''
     };
 
     // DOM 元素
     let appElement;
 
+    // 生成设备指纹
+    function generateDeviceFingerprint() {
+      const components = [
+        navigator.userAgent,
+        navigator.language,
+        navigator.platform,
+        screen.width + 'x' + screen.height,
+        new Date().getTimezoneOffset()
+      ];
+      
+      // 添加更复杂的特征
+      try {
+        const canvas = document.createElement('canvas');
+        const ctx = canvas.getContext('2d');
+        ctx.textBaseline = 'top';
+        ctx.font = '14px Arial';
+        ctx.fillText('Device Fingerprint', 2, 2);
+        components.push(canvas.toDataURL().slice(0, 50));
+      } catch (e) {
+        components.push('canvas-not-supported');
+      }
+      
+      // 简单哈希函数
+      let hash = 0;
+      const str = components.join('|');
+      for (let i = 0; i < str.length; i++) {
+        const char = str.charCodeAt(i);
+        hash = ((hash << 5) - hash) + char;
+        hash = hash & hash;
+      }
+      return Math.abs(hash).toString(36);
+    }
+
+    // 密码哈希（简单实现，生产环境应使用更安全的方法）
+    function hashPassword(password) {
+      let hash = 0;
+      const str = password + 'income-tracker-salt-2024';
+      for (let i = 0; i < str.length; i++) {
+        const char = str.charCodeAt(i);
+        hash = ((hash << 5) - hash) + char;
+        hash = hash & hash;
+      }
+      return Math.abs(hash).toString(36) + Math.abs(hash).toString(16);
+    }
+
+    // 检查是否是首次使用
+    function isFirstTime() {
+      return !localStorage.getItem('appPassword');
+    }
+
+    // 获取白名单设备
+    function getWhitelistedDevices() {
+      try {
+        const data = localStorage.getItem('whitelistedDevices');
+        return data ? JSON.parse(data) : [];
+      } catch (e) {
+        return [];
+      }
+    }
+
+    // 保存白名单设备
+    function saveWhitelistedDevices(devices) {
+      try {
+        localStorage.setItem('whitelistedDevices', JSON.stringify(devices));
+      } catch (e) {
+        console.error('保存设备白名单失败:', e);
+      }
+    }
+
+    // 检查设备是否在白名单中
+    function isDeviceWhitelisted() {
+      const devices = getWhitelistedDevices();
+      const deviceId = state.deviceFingerprint;
+      return devices.some(d => d.id === deviceId);
+    }
+
+    // 添加设备到白名单
+    function addDeviceToWhitelist() {
+      const devices = getWhitelistedDevices();
+      const deviceId = state.deviceFingerprint;
+      
+      if (!devices.some(d => d.id === deviceId)) {
+        devices.push({
+          id: deviceId,
+          userAgent: navigator.userAgent.slice(0, 50),
+          addedAt: new Date().toISOString()
+        });
+        saveWhitelistedDevices(devices);
+      }
+    }
+
+    // 检查登录状态
+    function checkLoginStatus() {
+      const lastLoginTime = localStorage.getItem('lastLoginTime');
+      const deviceId = localStorage.getItem('lastDeviceId');
+      
+      if (lastLoginTime && deviceId) {
+        const timeDiff = Date.now() - parseInt(lastLoginTime);
+        const deviceIdMatch = deviceId === state.deviceFingerprint;
+        
+        // 30天内且设备匹配则自动登录
+        if (timeDiff < 30 * 24 * 60 * 60 * 1000 && deviceIdMatch) {
+          state.isLoggedIn = true;
+          return true;
+        }
+      }
+      return false;
+    }
+
+    // 设置密码（首次使用）
+    function setupPassword(password) {
+      const hashedPassword = hashPassword(password);
+      localStorage.setItem('appPassword', hashedPassword);
+      localStorage.setItem('adminDeviceId', state.deviceFingerprint); // 标记当前设备为管理员
+      addDeviceToWhitelist();
+      localStorage.setItem('lastLoginTime', Date.now().toString());
+      localStorage.setItem('lastDeviceId', state.deviceFingerprint);
+      state.isLoggedIn = true;
+      state.loginError = '';
+      render();
+    }
+
+    // 验证密码
+    function verifyPassword(password) {
+      const storedPassword = localStorage.getItem('appPassword');
+      const hashedPassword = hashPassword(password);
+      
+      if (hashedPassword === storedPassword) {
+        const isWhitelisted = isDeviceWhitelisted();
+        
+        if (!isWhitelisted) {
+          // 新设备，需要确认
+          if (!confirm('检测到新设备，是否添加到白名单？')) {
+            return false;
+          }
+          addDeviceToWhitelist();
+        }
+        
+        localStorage.setItem('lastLoginTime', Date.now().toString());
+        localStorage.setItem('lastDeviceId', state.deviceFingerprint);
+        state.isLoggedIn = true;
+        state.loginError = '';
+        return true;
+      } else {
+        state.loginError = '密码错误，请重试';
+        return false;
+      }
+    }
+
+    // 登出
+    function logout() {
+      state.isLoggedIn = false;
+      localStorage.removeItem('lastLoginTime');
+      localStorage.removeItem('lastDeviceId');
+      render();
+    }
+
+    // 移除设备
+    function removeDevice(deviceId) {
+      const adminDeviceId = localStorage.getItem('adminDeviceId') || '';
+      const isAdmin = state.deviceFingerprint === adminDeviceId;
+      
+      if (!isAdmin) {
+        alert('只有管理员可以移除设备');
+        return;
+      }
+      
+      if (deviceId === state.deviceFingerprint) {
+        alert('不能移除当前使用的设备');
+        return;
+      }
+
+      if (!confirm('确定要移除这个设备吗？移除后该设备需要重新登录。')) {
+        return;
+      }
+
+      const devices = getWhitelistedDevices();
+      const filteredDevices = devices.filter(d => d.id !== deviceId);
+      saveWhitelistedDevices(filteredDevices);
+      renderDeviceModal();
+    }
+
+    // 渲染设备管理弹窗
+    function renderDeviceModal() {
+      const devices = getWhitelistedDevices();
+      const currentDeviceId = state.deviceFingerprint;
+      
+      // 获取管理员设备ID
+      const adminDeviceId = localStorage.getItem('adminDeviceId') || '';
+      const isAdmin = currentDeviceId === adminDeviceId;
+
+      let deviceListHTML = '';
+
+      if (devices.length === 0) {
+        deviceListHTML = `
+          <div class="device-empty">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+            </svg>
+            <p>暂无已授权设备</p>
+          </div>
+        `;
+      } else {
+        deviceListHTML = `
+          <div class="device-list">
+            ${devices.map(device => {
+              const isCurrentDevice = device.id === currentDeviceId;
+              const isAdminDevice = device.id === adminDeviceId;
+              const canRemove = isAdmin && !isCurrentDevice;
+              
+              return `
+              <div class="device-item ${isCurrentDevice ? 'current' : ''}">
+                <div class="device-item-info">
+                  <div class="device-item-id">
+                    ${device.id.slice(0, 12)}...
+                    ${isAdminDevice ? '<span class="current-device-badge" style="background: linear-gradient(135deg, #f39c12 0%, #e67e22 100%);">管理员</span>' : ''}
+                    ${isCurrentDevice && !isAdminDevice ? '<span class="current-device-badge">当前设备</span>' : ''}
+                  </div>
+                  <div class="device-item-details">
+                    ${device.userAgent || '未知浏览器'}
+                  </div>
+                  <div class="device-item-details">
+                    添加时间: ${new Date(device.addedAt).toLocaleString('zh-CN')}
+                  </div>
+                </div>
+                <div class="device-item-actions">
+                  <button 
+                    class="device-item-remove"
+                    onclick="removeDevice('${device.id}')"
+                    ${canRemove ? '' : 'disabled'}
+                    title="${isAdmin ? '移除此设备' : '只有管理员可以移除设备'}"
+                  >
+                    移除
+                  </button>
+                </div>
+              </div>
+            `}).join('')}
+          </div>
+        `;
+      }
+
+      const html = `
+        <div class="modal-overlay" onclick="closeDeviceModal()">
+          <div class="modal-content" onclick="event.stopPropagation()">
+            <h3 class="modal-title">管理登录设备 ${isAdmin ? '(管理员)' : ''}</h3>
+            <p class="modal-info">${isAdmin ? '您可以管理所有已授权的设备' : '只有管理员可以移除设备'}</p>
+            ${deviceListHTML}
+            <div class="modal-actions">
+              <button class="btn-secondary" onclick="closeDeviceModal()">关闭</button>
+            </div>
+          </div>
+        </div>
+      `;
+
+      // 替换现有的设备管理弹窗
+      const existingModal = document.querySelector('.modal-overlay');
+      if (existingModal) {
+        existingModal.outerHTML = html;
+      } else {
+        const tempDiv = document.createElement('div');
+        tempDiv.innerHTML = html;
+        document.body.appendChild(tempDiv.firstElementChild);
+      }
+    }
+
+    // 关闭设备管理弹窗
+    function closeDeviceModal() {
+      state.showDeviceModal = false;
+      const deviceModal = document.querySelector('.modal-overlay');
+      if (deviceModal) {
+        deviceModal.remove();
+      }
+    }
+
     // 初始化
     function init() {
       appElement = document.getElementById('app');
-      loadData();
+      state.deviceFingerprint = generateDeviceFingerprint();
+      
+      // 检查登录状态
+      if (!isFirstTime() && checkLoginStatus()) {
+        loadData();
+      }
+      
       render();
       
       // 阻止双击缩放
@@ -677,8 +1402,16 @@
     function closeModal() {
       state.showModal = false;
       state.showBackupModal = false;
+      state.showDeviceModal = false;
       state.selectedDate = null;
       state.editValue = '';
+      
+      // 移除设备管理弹窗
+      const deviceModal = document.querySelector('.modal-overlay');
+      if (deviceModal) {
+        deviceModal.remove();
+      }
+      
       render();
     }
 
@@ -717,6 +1450,12 @@
 
     // 渲染应用
     function render() {
+      // 如果未登录，显示登录界面
+      if (!state.isLoggedIn) {
+        renderLoginPage();
+        return;
+      }
+      
       const stats = calculateStats();
       const year = state.currentDate.getFullYear();
       const month = state.currentDate.getMonth();
@@ -766,6 +1505,8 @@
           <header class="header">
             <h1 class="title">每日收入记录</h1>
             <div class="backup-controls">
+              <button class="logout-button" onclick="logout()">退出登录</button>
+              <button onclick="state.showDeviceModal=true;renderDeviceModal()">设备管理</button>
               <button onclick="handleExport()">导出</button>
               <button onclick="state.showBackupModal=true;render()">导入</button>
             </div>
@@ -812,6 +1553,136 @@
       `;
       
       appElement.innerHTML = html;
+      
+      // 如果设备管理弹窗需要显示
+      if (state.showDeviceModal) {
+        renderDeviceModal();
+      }
+    }
+
+    // 渲染登录页面
+    function renderLoginPage() {
+      const isSetup = isFirstTime();
+      
+      const html = `
+        <div class="login-container">
+          <div class="login-card">
+            <div class="login-logo">
+              <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z"/>
+              </svg>
+            </div>
+            <h1 class="login-title">每日收入记录</h1>
+            <p class="login-subtitle">${isSetup ? '首次使用，请设置您的登录密码' : '请输入密码以继续访问'}</p>
+            
+            <div class="error-message ${state.loginError ? 'show' : ''}">
+              ${state.loginError}
+            </div>
+            
+            <div class="login-input-group">
+              <label>密码</label>
+              <div class="login-input-wrapper">
+                <input 
+                  type="password" 
+                  id="password-input"
+                  placeholder="请输入密码（至少6位）"
+                  minlength="6"
+                  onkeypress="if(event.key==='Enter')handleLogin()"
+                >
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+                  <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+                </svg>
+              </div>
+            </div>
+            
+            ${isSetup ? `
+              <div class="login-input-group">
+                <label>确认密码</label>
+                <div class="login-input-wrapper">
+                  <input 
+                    type="password" 
+                    id="confirm-password-input"
+                    placeholder="请再次输入密码"
+                    minlength="6"
+                    onkeypress="if(event.key==='Enter')handleLogin()"
+                  >
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                  </svg>
+                </div>
+              </div>
+            ` : ''}
+            
+            <button class="login-button" onclick="handleLogin()">
+              ${isSetup ? '设置密码' : '登录'}
+            </button>
+            
+            <div class="device-info">
+              <div class="device-info-header">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+                </svg>
+                <span>设备信息</span>
+              </div>
+              <div class="device-info-item">
+                <span>设备 ID</span>
+                <span>${state.deviceFingerprint}</span>
+              </div>
+              <div class="device-info-item">
+                <span>浏览器</span>
+                <span>${navigator.userAgent.slice(0, 35)}...</span>
+              </div>
+              <div class="device-info-item">
+                <span>屏幕</span>
+                <span>${screen.width} × ${screen.height}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      `;
+      
+      appElement.innerHTML = html;
+      
+      // 自动聚焦密码输入框
+      setTimeout(() => {
+        const input = document.getElementById('password-input');
+        if (input) input.focus();
+      }, 100);
+    }
+
+    // 处理登录/设置密码
+    function handleLogin() {
+      const passwordInput = document.getElementById('password-input');
+      const password = passwordInput ? passwordInput.value : '';
+      
+      state.loginError = '';
+      
+      if (!password || password.length < 6) {
+        state.loginError = '密码长度至少为6位';
+        renderLoginPage();
+        return;
+      }
+      
+      if (isFirstTime()) {
+        const confirmInput = document.getElementById('confirm-password-input');
+        const confirmPassword = confirmInput ? confirmInput.value : '';
+        
+        if (password !== confirmPassword) {
+          state.loginError = '两次输入的密码不一致';
+          renderLoginPage();
+          return;
+        }
+        
+        setupPassword(password);
+      } else {
+        if (verifyPassword(password)) {
+          loadData();
+          render();
+        } else {
+          renderLoginPage();
+        }
+      }
     }
 
     // 渲染编辑弹窗
@@ -864,7 +1735,6 @@
       `;
     }
 
-    // 启动应用
     window.addEventListener('DOMContentLoaded', init);
   </script>
 </body>
