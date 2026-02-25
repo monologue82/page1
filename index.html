@@ -1,0 +1,871 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>每日收入记录</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    html, body {
+      width: 100%;
+      height: 100%;
+      overflow-x: hidden;
+    }
+    
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif;
+      background: #f5f7fa;
+      min-height: 100vh;
+      color: #333;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+    
+    .app-container {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 16px;
+      min-height: 100vh;
+    }
+    
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+      padding: 20px;
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+    
+    .title {
+      font-size: 24px;
+      font-weight: 700;
+      color: #2c3e50;
+      margin: 0;
+      flex: 1;
+      min-width: 120px;
+    }
+    
+    .backup-controls {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    
+    .backup-controls button {
+      padding: 8px 16px;
+      font-size: 14px;
+      border: 1px solid #3498db;
+      background: white;
+      color: #3498db;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      font-weight: 500;
+    }
+    
+    .backup-controls button:hover {
+      background: #3498db;
+      color: white;
+      transform: translateY(-1px);
+    }
+    
+    .backup-controls button:active {
+      transform: translateY(0);
+    }
+    
+    .stats-container {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+    
+    .stat-card {
+      background: white;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+      text-align: center;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    
+    .stat-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+    
+    .stat-label {
+      font-size: 13px;
+      color: #7f8c8d;
+      margin-bottom: 8px;
+      font-weight: 500;
+    }
+    
+    .stat-value {
+      font-size: 20px;
+      font-weight: 700;
+      color: #3498db;
+    }
+    
+    .calendar-container {
+      background: white;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+    }
+    
+    .calendar-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+      padding: 0 8px;
+    }
+    
+    .calendar-header button {
+      background: none;
+      border: none;
+      font-size: 28px;
+      color: #3498db;
+      cursor: pointer;
+      padding: 8px 16px;
+      transition: all 0.2s ease;
+      border-radius: 8px;
+    }
+    
+    .calendar-header button:hover {
+      background: #ecf0f1;
+      transform: scale(1.1);
+    }
+    
+    .calendar-header button:active {
+      transform: scale(0.95);
+    }
+    
+    .calendar-title {
+      font-size: 18px;
+      font-weight: 700;
+      margin: 0;
+      color: #2c3e50;
+    }
+    
+    .calendar-weekdays {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 4px;
+      margin-bottom: 4px;
+    }
+    
+    .weekday {
+      text-align: center;
+      font-weight: 600;
+      color: #7f8c8d;
+      padding: 10px 0;
+      font-size: 12px;
+    }
+    
+    .calendar-grid {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 4px;
+    }
+    
+    .calendar-day {
+      aspect-ratio: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      border-radius: 8px;
+      background: #f8f9fa;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      padding: 4px;
+      min-height: 44px;
+      position: relative;
+    }
+    
+    .calendar-day:hover:not(.empty):not(.disabled) {
+      background: #e9ecef;
+      transform: scale(1.05);
+    }
+    
+    .calendar-day:active:not(.empty):not(.disabled) {
+      transform: scale(0.98);
+    }
+    
+    .calendar-day.empty {
+      background: transparent;
+      cursor: default;
+    }
+    
+    .calendar-day.disabled {
+      opacity: 0.3;
+      cursor: not-allowed;
+    }
+    
+    .calendar-day.today {
+      border: 2px solid #3498db;
+      background: #ebf5fb;
+    }
+    
+    .calendar-day.has-income {
+      background: #d5e8f7;
+      border: 1px solid #3498db;
+    }
+    
+    .calendar-day.today.has-income {
+      border: 2px solid #3498db;
+      background: #d5e8f7;
+    }
+    
+    .day-number {
+      font-size: 14px;
+      font-weight: 600;
+      color: #2c3e50;
+      margin-bottom: 2px;
+    }
+    
+    .income-amount {
+      font-size: 11px;
+      font-weight: 700;
+      color: #3498db;
+      background: white;
+      padding: 2px 6px;
+      border-radius: 4px;
+      white-space: nowrap;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    }
+    
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.5);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+      padding: 16px;
+      animation: fadeIn 0.2s ease;
+    }
+    
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+    
+    @keyframes slideIn {
+      from {
+        transform: scale(0.9);
+        opacity: 0;
+      }
+      to {
+        transform: scale(1);
+        opacity: 1;
+      }
+    }
+    
+    @keyframes slideOut {
+      from {
+        transform: scale(1);
+        opacity: 1;
+      }
+      to {
+        transform: scale(0.9);
+        opacity: 0;
+      }
+    }
+    
+    .modal-content {
+      background: white;
+      padding: 24px;
+      border-radius: 12px;
+      max-width: 340px;
+      width: 100%;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+      animation: slideIn 0.2s ease;
+    }
+    
+    .modal-content.closing {
+      animation: slideOut 0.2s ease;
+    }
+    
+    .modal-title {
+      font-size: 20px;
+      font-weight: 700;
+      margin-bottom: 8px;
+      color: #2c3e50;
+    }
+    
+    .modal-date {
+      color: #7f8c8d;
+      margin-bottom: 16px;
+      font-size: 13px;
+    }
+    
+    .modal-info {
+      color: #7f8c8d;
+      margin-bottom: 16px;
+      font-size: 13px;
+    }
+    
+    .modal-input-group {
+      margin-bottom: 16px;
+    }
+    
+    .modal-input-group label {
+      display: block;
+      margin-bottom: 6px;
+      font-weight: 500;
+      color: #2c3e50;
+      font-size: 14px;
+    }
+    
+    .modal-input-group input {
+      font-size: 16px;
+      padding: 12px;
+      border: 2px solid #e9ecef;
+      border-radius: 8px;
+      transition: all 0.2s ease;
+      width: 100%;
+      -webkit-appearance: none;
+    }
+    
+    .modal-input-group input:focus {
+      border-color: #3498db;
+      outline: none;
+      box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+    }
+    
+    .modal-actions {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    
+    .modal-actions button {
+      flex: 1;
+      min-width: 80px;
+      padding: 12px;
+      border: none;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    
+    .btn-primary {
+      background: #3498db;
+      color: white;
+    }
+    
+    .btn-primary:hover {
+      background: #2980b9;
+      transform: translateY(-1px);
+    }
+    
+    .btn-secondary {
+      background: #95a5a6;
+      color: white;
+    }
+    
+    .btn-secondary:hover {
+      background: #7f8c8d;
+      transform: translateY(-1px);
+    }
+    
+    .btn-danger {
+      background: #e74c3c;
+      color: white;
+    }
+    
+    .btn-danger:hover {
+      background: #c0392b;
+      transform: translateY(-1px);
+    }
+    
+    .btn-full {
+      width: 100%;
+    }
+    
+    /* 手机端优化 */
+    @media (max-width: 480px) {
+      .app-container {
+        padding: 12px;
+      }
+      
+      .header {
+        padding: 16px;
+        margin-bottom: 16px;
+      }
+      
+      .title {
+        font-size: 20px;
+      }
+      
+      .stats-container {
+        grid-template-columns: 1fr;
+        gap: 10px;
+      }
+      
+      .stat-card {
+        padding: 16px;
+      }
+      
+      .stat-value {
+        font-size: 18px;
+      }
+      
+      .calendar-container {
+        padding: 16px;
+      }
+      
+      .calendar-header {
+        margin-bottom: 12px;
+      }
+      
+      .calendar-title {
+        font-size: 16px;
+      }
+      
+      .calendar-header button {
+        padding: 6px 12px;
+        font-size: 24px;
+      }
+      
+      .calendar-day {
+        min-height: 38px;
+        padding: 2px;
+      }
+      
+      .day-number {
+        font-size: 12px;
+      }
+      
+      .income-amount {
+        font-size: 10px;
+        padding: 1px 4px;
+      }
+      
+      .weekday {
+        font-size: 11px;
+        padding: 8px 0;
+      }
+      
+      .modal-content {
+        padding: 20px;
+        max-width: 100%;
+      }
+      
+      .modal-title {
+        font-size: 18px;
+      }
+      
+      .modal-actions {
+        flex-direction: column;
+      }
+      
+      .modal-actions button {
+        width: 100%;
+      }
+    }
+    
+    /* 超小屏幕优化 */
+    @media (max-width: 360px) {
+      .calendar-day {
+        min-height: 34px;
+      }
+      
+      .day-number {
+        font-size: 11px;
+      }
+      
+      .income-amount {
+        font-size: 9px;
+        padding: 1px 3px;
+      }
+      
+      .stat-value {
+        font-size: 16px;
+      }
+    }
+    
+    /* 触摸设备优化 */
+    @media (hover: none) and (pointer: coarse) {
+      .calendar-day:hover {
+        transform: none;
+      }
+      
+      .calendar-day:active:not(.empty):not(.disabled) {
+        background: #e9ecef;
+        transform: scale(0.95);
+      }
+    }
+  </style>
+</head>
+<body>
+  <div id="app"></div>
+  
+  <script>
+    // 应用状态
+    const state = {
+      currentDate: new Date(),
+      incomeData: {},
+      selectedDate: null,
+      showModal: false,
+      editValue: '',
+      showBackupModal: false
+    };
+
+    // DOM 元素
+    let appElement;
+
+    // 初始化
+    function init() {
+      appElement = document.getElementById('app');
+      loadData();
+      render();
+      
+      // 阻止双击缩放
+      document.addEventListener('touchstart', function(event) {
+        if (event.touches.length > 1) {
+          event.preventDefault();
+        }
+      }, { passive: false });
+      
+      let lastTouchEnd = 0;
+      document.addEventListener('touchend', function(event) {
+        const now = Date.now();
+        if (now - lastTouchEnd <= 300) {
+          event.preventDefault();
+        }
+        lastTouchEnd = now;
+      }, false);
+    }
+
+    // 从 localStorage 加载数据
+    function loadData() {
+      try {
+        const saved = localStorage.getItem('incomeData');
+        if (saved) {
+          state.incomeData = JSON.parse(saved);
+        }
+      } catch (e) {
+        console.error('加载数据失败:', e);
+      }
+    }
+
+    // 保存数据到 localStorage
+    function saveData() {
+      try {
+        localStorage.setItem('incomeData', JSON.stringify(state.incomeData));
+      } catch (e) {
+        console.error('保存数据失败:', e);
+        alert('保存失败，请检查浏览器存储空间');
+      }
+    }
+
+    // 获取月份的天数
+    function getDaysInMonth(year, month) {
+      return new Date(year, month + 1, 0).getDate();
+    }
+
+    // 获取月份的第一天是星期几
+    function getFirstDayOfMonth(year, month) {
+      return new Date(year, month, 1).getDay();
+    }
+
+    // 格式化日期为 YYYY-MM-DD
+    function formatDateKey(year, month, day) {
+      return `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+    }
+
+    // 检查日期是否可以编辑（今天或之前）
+    function canEditDate(year, month, day) {
+      const date = new Date(year, month, day);
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
+      return date <= today;
+    }
+
+    // 计算统计数据
+    function calculateStats() {
+      const allDates = Object.keys(state.incomeData);
+      const totalIncome = allDates.reduce((sum, date) => sum + (state.incomeData[date] || 0), 0);
+      
+      const currentMonthKey = `${state.currentDate.getFullYear()}-${String(state.currentDate.getMonth() + 1).padStart(2, '0')}`;
+      const monthlyIncome = allDates
+        .filter(date => date.startsWith(currentMonthKey))
+        .reduce((sum, date) => sum + (state.incomeData[date] || 0), 0);
+      
+      const daysWithIncome = allDates.filter(date => state.incomeData[date] > 0).length;
+      const avgIncome = daysWithIncome > 0 ? totalIncome / daysWithIncome : 0;
+
+      return { totalIncome, monthlyIncome, avgIncome, daysWithIncome };
+    }
+
+    // 处理日期点击
+    function handleDateClick(day) {
+      const year = state.currentDate.getFullYear();
+      const month = state.currentDate.getMonth();
+      
+      if (!canEditDate(year, month, day)) {
+        return;
+      }
+
+      const dateKey = formatDateKey(year, month, day);
+      state.selectedDate = dateKey;
+      state.editValue = state.incomeData[dateKey] || '';
+      state.showModal = true;
+      render();
+      
+      // 自动聚焦输入框
+      setTimeout(() => {
+        const input = document.getElementById('income-input');
+        if (input) {
+          input.focus();
+          input.select();
+        }
+      }, 100);
+    }
+
+    // 切换月份
+    function changeMonth(delta) {
+      state.currentDate = new Date(state.currentDate);
+      state.currentDate.setMonth(state.currentDate.getMonth() + delta);
+      render();
+    }
+
+    // 保存收入
+    function handleSave() {
+      const value = parseFloat(state.editValue) || 0;
+      if (value >= 0) {
+        state.incomeData[state.selectedDate] = value;
+        saveData();
+      }
+      state.showModal = false;
+      state.selectedDate = null;
+      state.editValue = '';
+      render();
+    }
+
+    // 删除收入
+    function handleDelete() {
+      delete state.incomeData[state.selectedDate];
+      saveData();
+      state.showModal = false;
+      state.selectedDate = null;
+      state.editValue = '';
+      render();
+    }
+
+    // 关闭弹窗
+    function closeModal() {
+      state.showModal = false;
+      state.showBackupModal = false;
+      state.selectedDate = null;
+      state.editValue = '';
+      render();
+    }
+
+    // 导出数据
+    function handleExport() {
+      const dataStr = JSON.stringify(state.incomeData, null, 2);
+      const blob = new Blob([dataStr], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `income-backup-${new Date().toISOString().split('T')[0]}.json`;
+      a.click();
+      URL.revokeObjectURL(url);
+    }
+
+    // 导入数据
+    function handleImport(event) {
+      const file = event.target.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          try {
+            const data = JSON.parse(e.target.result);
+            state.incomeData = data;
+            saveData();
+            state.showBackupModal = false;
+            render();
+            alert('数据导入成功！');
+          } catch (error) {
+            alert('导入失败，请检查文件格式');
+          }
+        };
+        reader.readAsText(file);
+      }
+    }
+
+    // 渲染应用
+    function render() {
+      const stats = calculateStats();
+      const year = state.currentDate.getFullYear();
+      const month = state.currentDate.getMonth();
+      const daysInMonth = getDaysInMonth(year, month);
+      const firstDay = getFirstDayOfMonth(year, month);
+      const today = new Date();
+      
+      const months = ['一月', '二月', '三月', '四月', '五月', '六月', 
+                      '七月', '八月', '九月', '十月', '十一月', '十二月'];
+      const weekdays = ['日', '一', '二', '三', '四', '五', '六'];
+      
+      // 生成日历格子
+      let calendarHTML = '';
+      
+      // 空白格子
+      for (let i = 0; i < firstDay; i++) {
+        calendarHTML += '<div class="calendar-day empty"></div>';
+      }
+      
+      // 日期格子
+      for (let day = 1; day <= daysInMonth; day++) {
+        const dateKey = formatDateKey(year, month, day);
+        const income = state.incomeData[dateKey] || 0;
+        const isToday = day === today.getDate() && 
+                        month === today.getMonth() && 
+                        year === today.getFullYear();
+        const canEdit = canEditDate(year, month, day);
+        
+        let classes = 'calendar-day';
+        if (isToday) classes += ' today';
+        if (!canEdit) classes += ' disabled';
+        if (income > 0) classes += ' has-income';
+        
+        const clickAttr = canEdit ? `onclick="handleDateClick(${day})"` : '';
+        
+        calendarHTML += `
+          <div class="${classes}" ${clickAttr}>
+            <span class="day-number">${day}</span>
+            ${income > 0 ? `<span class="income-amount">¥${income.toFixed(2)}</span>` : ''}
+          </div>
+        `;
+      }
+      
+      // 主 HTML
+      const html = `
+        <div class="app-container">
+          <header class="header">
+            <h1 class="title">每日收入记录</h1>
+            <div class="backup-controls">
+              <button onclick="handleExport()">导出</button>
+              <button onclick="state.showBackupModal=true;render()">导入</button>
+            </div>
+          </header>
+
+          <div class="stats-container">
+            <div class="stat-card">
+              <div class="stat-label">总收入</div>
+              <div class="stat-value">¥${stats.totalIncome.toFixed(2)}</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-label">本月收入</div>
+              <div class="stat-value">¥${stats.monthlyIncome.toFixed(2)}</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-label">日均收入</div>
+              <div class="stat-value">¥${stats.avgIncome.toFixed(2)}</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-label">有收入天数</div>
+              <div class="stat-value">${stats.daysWithIncome} 天</div>
+            </div>
+          </div>
+
+          <div class="calendar-container">
+            <div class="calendar-header">
+              <button onclick="changeMonth(-1)">❮</button>
+              <h2 class="calendar-title">${year}年 ${months[month]}</h2>
+              <button onclick="changeMonth(1)">❯</button>
+            </div>
+
+            <div class="calendar-weekdays">
+              ${weekdays.map(day => `<div class="weekday">${day}</div>`).join('')}
+            </div>
+
+            <div class="calendar-grid">
+              ${calendarHTML}
+            </div>
+          </div>
+        </div>
+        
+        ${state.showModal ? renderEditModal() : ''}
+        ${state.showBackupModal ? renderBackupModal() : ''}
+      `;
+      
+      appElement.innerHTML = html;
+    }
+
+    // 渲染编辑弹窗
+    function renderEditModal() {
+      return `
+        <div class="modal-overlay" onclick="closeModal()">
+          <div class="modal-content" onclick="event.stopPropagation()">
+            <h3 class="modal-title">编辑收入</h3>
+            <p class="modal-date">${state.selectedDate}</p>
+            <div class="modal-input-group">
+              <label>收入金额 (¥)</label>
+              <input 
+                type="number" 
+                id="income-input"
+                value="${state.editValue}" 
+                onchange="state.editValue=this.value"
+                placeholder="输入金额" 
+                min="0" 
+                step="0.01"
+              >
+            </div>
+            <div class="modal-actions">
+              <button class="btn-secondary" onclick="closeModal()">取消</button>
+              ${state.incomeData[state.selectedDate] ? '<button class="btn-danger" onclick="handleDelete()">删除</button>' : ''}
+              <button class="btn-primary" onclick="handleSave()">保存</button>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    // 渲染备份弹窗
+    function renderBackupModal() {
+      return `
+        <div class="modal-overlay" onclick="closeModal()">
+          <div class="modal-content" onclick="event.stopPropagation()">
+            <h3 class="modal-title">导入数据</h3>
+            <p class="modal-info">选择之前导出的备份文件来恢复数据</p>
+            <input 
+              type="file" 
+              accept=".json" 
+              onchange="handleImport(event)"
+              class="modal-input-group btn-full"
+            >
+            <div class="modal-actions">
+              <button class="btn-secondary" onclick="closeModal()">取消</button>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    // 启动应用
+    window.addEventListener('DOMContentLoaded', init);
+  </script>
+</body>
+</html>
